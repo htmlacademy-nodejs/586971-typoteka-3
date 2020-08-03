@@ -45,15 +45,15 @@ const ANNOUNCES = [
   `Игры и программирование разные вещи. Не стоит идти в программисты, если вам нравится только игры.`,
   `Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать.`,
 ];
-const announcesRestrict = {
+const AnnouncesRestrict = {
   MIN: 1,
   MAX: 5,
 };
-const monthDifferenceRestrict = {
+const MonthDifferenceRestrict = {
   MIN: 0,
   MAX: 2,
 };
-const dayRestrict = {
+const DayRestrict = {
   MIN: 1,
   MAX: 31
 };
@@ -80,11 +80,11 @@ const generateData = () => {
     const year = currentDate.getFullYear();
 
     const currentMonth = currentDate.getMonth() + 1;
-    const month = currentMonth - getRandomInt(monthDifferenceRestrict.MIN, monthDifferenceRestrict.MAX);
+    const month = currentMonth - getRandomInt(MonthDifferenceRestrict.MIN, MonthDifferenceRestrict.MAX);
 
     const currentDay = currentDate.getDate();
-    const maxDay = currentMonth === month ? currentDay : dayRestrict.MAX;
-    const day = getRandomInt(dayRestrict.MIN, maxDay);
+    const maxDay = currentMonth === month ? currentDay : DayRestrict.MAX;
+    const day = getRandomInt(DayRestrict.MIN, maxDay);
 
     if (iteration === maxIteration) {
       return `${currentDay}.${currentMonth}.${year}`;
@@ -117,7 +117,7 @@ const generatePublication = (count) => (
   Array(count).fill({}).map(()=>({
     title: TITLES[getRandomInt(0, TITLES.length-1)],
     createdDate: generateData(),
-    announce: shuffle(ANNOUNCES).slice(announcesRestrict.MIN, announcesRestrict.MAX).join(` `),
+    announce: shuffle(ANNOUNCES).slice(AnnouncesRestrict.MIN, AnnouncesRestrict.MAX).join(` `),
     fullText: shuffle(ANNOUNCES).slice(1, getRandomInt(1, ANNOUNCES.length -1)).join(` `),
     category: generateCategories(),
   }))
