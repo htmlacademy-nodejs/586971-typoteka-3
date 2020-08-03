@@ -3,7 +3,7 @@ const fs = require(`fs`);
 const {
   getRandomInt,
   shuffle,
-  validateDate
+  parseIsoDatetime
 } = require(`../../utils`);
 const { ExitCode } = require(`../../constants`);
 
@@ -51,11 +51,7 @@ const AnnouncesRestrict = {
 };
 const MonthDifferenceRestrict = {
   MIN: 0,
-  MAX: 2,
-};
-const DayRestrict = {
-  MIN: 1,
-  MAX: 31
+  MAX: -2592000000,
 };
 const CATEGORIES = [
   `Деревья`,
@@ -70,47 +66,13 @@ const CATEGORIES = [
 ];
 
 const generateData = () => {
-  const maxIteration = 10;
-  let iteration = 0;
-  while (true) {
-    iteration++;
-
-    const currentDate = new Date();
-
-    const year = currentDate.getFullYear();
-
-    const currentMonth = currentDate.getMonth() + 1;
-    const month = currentMonth - getRandomInt(MonthDifferenceRestrict.MIN, MonthDifferenceRestrict.MAX);
-
-    const currentDay = currentDate.getDate();
-    const maxDay = currentMonth === month ? currentDay : DayRestrict.MAX;
-    const day = getRandomInt(DayRestrict.MIN, maxDay);
-
-    if (iteration === maxIteration) {
-      return `${currentDay}.${currentMonth}.${year}`;
-    } else if(validateDate(`${day}.${month}.${year}`)) {
-      return `${day}.${month}.${year}`;
-    }
-  }
+  const currentDate = new Date(Date.now() + getRandomInt(MonthDifferenceRestrict.MIN, MonthDifferenceRestrict.MAX));
+  return parseIsoDatetime(currentDate.toISOString());
 };
 
 const generateCategories = () => {
   const categoriesCount = getRandomInt(1, CATEGORIES.length-1);
-  const used = [];
-  let category;
-
-  return Array(categoriesCount)
-    .fill('')
-    .map(() => {
-      while (true) {
-        category = CATEGORIES[getRandomInt(0, CATEGORIES.length-1)];
-        if (!used.includes(category)) {
-          used.push(category);
-          break;
-        }
-      }
-      return category;
-    });
+  return shuffle(CATEGORIES).slice(0, categoriesCount);
 };
 
 const generatePublication = (count) => (

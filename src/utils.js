@@ -37,3 +37,13 @@ module.exports.validateDate = (date) => {
   const d = new Date(arrD[2], arrD[1], arrD[0]);
   return (d.getFullYear() === arrD[2]) && (d.getMonth() === arrD[1]) && (d.getDate() === arrD[0]);
 };
+
+/**
+ * Функция для парсинга строки даты в формате из ISO в yyyy.mm.dd
+ * @return {string} - дата в формате yyyy.mm.dd
+ * @param {string} dtstr - дата в формате ISO
+ * */
+module.exports.parseIsoDatetime = (dtstr) => {
+    const dt = dtstr.split(`T`);
+    return dt[0].split(`-`).join(`.`);
+};
