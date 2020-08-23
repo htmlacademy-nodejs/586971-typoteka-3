@@ -44,6 +44,6 @@ module.exports.validateDate = (date) => {
  * @param {string} dtstr - дата в формате ISO
  * */
 module.exports.parseIsoDatetime = (dtstr) => {
-    const dt = dtstr.split(`T`);
-    return dt[0].split(`-`).join(`.`);
+  const dt = dtstr.split(`T`);
+  return dt[0].split(`-`).join(`.`);
 };
